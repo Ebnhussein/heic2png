@@ -1,26 +1,3 @@
-
-# HEIC2PNG - Image Converter
-
-A modern GUI application to convert HEIC images to PNG or JPEG formats with batch processing support.
-
-## Features
-
-- 🔄 Convert HEIC images to PNG or JPEG formats
-- 📁 Batch processing (multiple files at once)
-- 🎯 Progress bar with current image preview
-- 🖼️ Thumbnail preview during conversion
-- 💾 Save and restore user settings
-- 🔔 System notifications on completion
-- 🎨 Modern UI with CustomTkinter
-- 🌍 Cross-platform support (Windows, Linux, macOS)
-
-## Installation
-
-### Method 1: Run from source
-
-1. Install Python 3.7 or higher
-2. Install required packages:
-=======
 # 🖼️ HEIC2PNG - Image Converter
 
 A modern GUI application to convert `.HEIC` images to `.PNG` or `.JPEG` with batch processing, preview, and system notifications.
