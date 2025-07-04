@@ -27,7 +27,6 @@ A modern GUI application to convert `.HEIC` images to `.PNG` or `.JPEG` with bat
 1. Install Python 3.7 or higher
 2. Install dependencies:
 
->>>>>>> 0cdd1d25b7f3e0f05d2453190761bed65d65e373
 ```bash
 pip install -r requirements.txt
 ```
@@ -207,4 +206,3 @@ Made with ❤️ by [Ahmed Hussein](https://www.facebook.com/Ebnhusssein)
 ---
 
 ## 🕊️ Palestine is free 🇵🇸
->>>>>>> 0cdd1d25b7f3e0f05d2453190761bed65d65e373
