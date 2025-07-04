@@ -1,36 +1,52 @@
-name: Build and Release EXE for Windows
+name: Build and Sign EXE
 
 on:
   push:
     tags:
-      - 'v*'
+      - v*  
 
 jobs:
-  build:
+  build-and-sign:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.10
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
 
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pyinstaller
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
 
-      - name: Build EXE with PyInstaller
-        run: |
-          pyinstaller --onefile --windowed --icon=icon.ico HEIC2PNG.py
+    - name: Build EXE with PyInstaller
+      run: |
+        pyinstaller --noconfirm --onefile --windowed --icon=icon.ico HEIC2PNG.py
 
-      - name: Upload to GitHub Releases
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/HEIC2PNG.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload unsigned EXE
+      uses: actions/upload-artifact@v4
+      with:
+        name: unsigned-exe
+        path: dist/HEIC2PNG.exe
+
+    - name: Sign EXE with SignPath
+      uses: SignPath/github-action@v0.7.0
+      with:
+        signpath-organization-id: 2478cf92-2e4a-460c-bcef-4f8187c1a207
+        signpath-project-slug: f8b3571d-a6d7-4a8a-b2ba-fe9ebf5d265c
+        signpath-policy-slug: 24d7e4b2-5549-43dc-8bc0-86e78e94ef07
+        signpath-api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+        artifact-path: dist/HEIC2PNG.exe
+        signed-artifact-output-path: dist/HEIC2PNG-signed.exe
+
+    - name: Upload signed EXE to GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: dist/HEIC2PNG-signed.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
