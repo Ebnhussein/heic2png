@@ -5,6 +5,12 @@ A modern GUI application to convert `.HEIC` images to `.PNG` or `.JPEG` with bat
 [![Download for Windows](https://img.shields.io/badge/⬇️%20Download-Windows%20EXE-blue?style=for-the-badge&logo=windows)](https://github.com/ElJoker1/heic2png/releases/latest/download/HEIC2PNG.exe)
 
 ---
+### 💻 Download Executable (Windows)
+
+1. Go to the [Releases](https://github.com/ElJoker1/heic2png/releases/latest)
+2. Download `HEIC2PNG.exe`
+3. Run directly without installation!
+---
 
 ## ✨ Features
 
@@ -132,50 +138,4 @@ Made with ❤️ by [Ahmed Hussein](https://www.facebook.com/Ebnhusssein)
 ---
 
 ## 🕊️ Palestine is free 🇵🇸
-=======
-3. Run:
-
-```bash
-python HEIC2PNG.py
-```
-
----
-
-### 💻 Method 2: Download Executable (Windows)
-
-1. Go to the [Releases](https://github.com/ElJoker1/heic2png/releases/latest)
-2. Download `HEIC2PNG.exe`
-3. Run directly without installation!
-
----
-
-## 🚀 Usage
-
-1. 📤 Click **Select Images**
-2. 📁 Choose **Output Folder**
-3. 🖼️ Select **PNG** or **JPEG**
-4. ▶️ Press **Start Conversion**
-5. ⏳ Watch progress & thumbnail preview
-6. 🔔 Get a system notification when done
-
----
-
-## 📁 File Structure
-
-```
-HEIC2PNG/
-├── HEIC2PNG.py             # Main script
-├── requirements.txt        # Python dependencies
-├── build_exe.py            # Optional build script
-├── pngegg.png / icon.ico   # App icon
-└── dist/                   # Generated executables
-```
-
----
-
-
----
-
----
-
 
