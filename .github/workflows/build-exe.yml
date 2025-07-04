@@ -3,7 +3,11 @@ name: 🛠️ Build EXE for Windows
 on:
   push:
     tags:
+HEAD
       - 'v*'
+
+      - 'v*'  # Runs when you push a version tag like v1.0.0
+
 
 jobs:
   build:
