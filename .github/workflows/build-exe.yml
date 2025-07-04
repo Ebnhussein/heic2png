@@ -32,3 +32,4 @@ jobs:
       with:
         name: HEIC2PNG
         path: dist/HEIC2PNG.exe
+
