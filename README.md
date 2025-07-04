@@ -58,36 +58,33 @@ python3 build_exe.py
 python3 test_executable.py
 ```
 
-## Usage
+## 🚀 Usage
 
-1. **Select Images**: Click "Select Images" to choose HEIC files
-2. **Choose Output Folder**: Click "Output Folder" to select where to save converted images
-3. **Select Format**: Choose PNG or JPEG output format
-4. **Start Conversion**: Click "Start Conversion" to begin processing
-5. **Monitor Progress**: Watch the progress bar and current image preview
-6. **Get Notified**: System notification when conversion is complete
+1. 📤 Click **Select Images**
+2. 📁 Choose **Output Folder**
+3. 🖼️ Select **PNG** or **JPEG**
+4. ▶️ Press **Start Conversion**
+5. ⏳ Watch progress & thumbnail preview
+6. 🔔 Get a system notification when done
 
-## File Structure
+## 📁 File Structure
 
 ```
 HEIC2PNG/
-├── heic_converter_gui.py    # Main application
-├── requirements.txt         # Python dependencies
-├── build_exe.py            # Build script for executable
-├── test_executable.py      # Test script for executable
-├── pngegg.png             # Application icon
-├── README.md              # This file
-└── dist/                  # Generated executable (after build)
-    ├── HEIC2PNG          # Linux/Mac executable
-    └── HEIC2PNG.exe      # Windows executable
+├── HEIC2PNG.py             # Main script
+├── requirements.txt        # Python dependencies
+├── build_exe.py            # Optional build script
+├── pngegg.png / icon.ico   # App icon
+└── dist/                   # Generated executables
 ```
 
-## Dependencies
+## 📦 Dependencies
 
-- **Pillow**: Image processing
-- **pyheif**: HEIC file support
-- **customtkinter**: Modern UI framework
-- **PyInstaller**: For creating executables
+- [`Pillow`](https://pypi.org/project/Pillow/)
+- [`pyheif`](https://pypi.org/project/pyheif/)
+- [`customtkinter`](https://github.com/TomSchimansky/CustomTkinter)
+- [`tkinterdnd2`](https://pypi.org/project/tkinterdnd2/)
+- [`pyinstaller`](https://pypi.org/project/pyinstaller/)
 
 ## Building for Distribution
 
@@ -106,27 +103,35 @@ python3 build_exe.py
 python3 build_exe.py
 ```
 
-## Troubleshooting
 
-### Common Issues
+## 🧰 Troubleshooting
 
-1. **Missing dependencies**: Run `pip install -r requirements.txt`
-2. **Icon not loading**: Ensure `pngegg.png` is in the same directory
-3. **HEIC files not detected**: Make sure you have `pyheif` installed
+- ❌ **No HEIC images found?** → Ensure files end with `.heic`
+- ❌ **Icon not loading?** → Confirm `icon.ico` is next to the `.py` file
+- ❌ **PyInstaller not working?** → Run: `pip install pyinstaller`
 
-### Build Issues
+## 🧪 Building Executable (Optional)
 
-1. **PyInstaller not found**: Install with `pip install pyinstaller`
-2. **Large executable**: This is normal for GUI applications with image processing libraries
+```bash
+pip install -r requirements.txt
+pyinstaller --onefile --windowed --icon=icon.ico HEIC2PNG.py
+```
+
+> Output will be in the `dist/` folder
 
 ## License
 
 This project is open source and available under the MIT License.
 
-## Developer
+## 🧑‍💻 Developer
 
-Developed by Ahmed Hussein
-Contact: https://www.facebook.com/Ebnhusssein 
+Made with ❤️ by [Ahmed Hussein](https://www.facebook.com/Ebnhusssein)
+
+> For suggestions or contributions, feel free to contact me.
+
+---
+
+## 🕊️ Palestine is free 🇵🇸
 =======
 3. Run:
 
@@ -168,41 +173,9 @@ HEIC2PNG/
 
 ---
 
-## 📦 Dependencies
-
-- [`Pillow`](https://pypi.org/project/Pillow/)
-- [`pyheif`](https://pypi.org/project/pyheif/)
-- [`customtkinter`](https://github.com/TomSchimansky/CustomTkinter)
-- [`tkinterdnd2`](https://pypi.org/project/tkinterdnd2/)
-- [`pyinstaller`](https://pypi.org/project/pyinstaller/)
 
 ---
 
-## 🧪 Building Executable (Optional)
-
-```bash
-pip install -r requirements.txt
-pyinstaller --onefile --windowed --icon=icon.ico HEIC2PNG.py
-```
-
-> Output will be in the `dist/` folder
-
 ---
 
-## 🧰 Troubleshooting
 
-- ❌ **No HEIC images found?** → Ensure files end with `.heic`
-- ❌ **Icon not loading?** → Confirm `icon.ico` is next to the `.py` file
-- ❌ **PyInstaller not working?** → Run: `pip install pyinstaller`
-
----
-
-## 🧑‍💻 Developer
-
-Made with ❤️ by [Ahmed Hussein](https://www.facebook.com/Ebnhusssein)
-
-> For suggestions or contributions, feel free to contact me.
-
----
-
-## 🕊️ Palestine is free 🇵🇸
