@@ -1,4 +1,4 @@
-name: Build Windows EXE with Nuitka
+name: Build & Release HEIC2PNG EXE
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest  
+    runs-on: windows-latest
 
     steps:
       - name: ✅ Checkout code
@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: 🔧 Install dependencies
+      - name: 🔧 Install Nuitka
         run: |
           pip install -U nuitka
 
@@ -26,8 +26,23 @@ jobs:
         run: |
           nuitka --onefile --windows-icon-from-ico=icon.ico HEIC2PNG.py
 
-      - name: ☁️ Upload EXE Artifact
+      - name: ☁️ Upload EXE as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: HEIC2PNG-windows
           path: HEIC2PNG.exe
+
+      - name: 🚀 Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📦 Upload EXE to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.0.0
+          files: HEIC2PNG.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
