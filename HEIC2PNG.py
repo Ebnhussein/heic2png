@@ -67,10 +67,8 @@ class HEICConverterApp:
         self.root.title("HEIC2PNG")
         self.root.geometry("800x550")
         self.root.resizable(False, False)
-        
-        # Set application icon
+
         try:
-            from PIL import Image
             icon_path = os.path.join(os.path.dirname(__file__), "pngegg.png")
             if os.path.exists(icon_path):
                 icon_image = Image.open(icon_path)
@@ -79,6 +77,7 @@ class HEICConverterApp:
                 self.root.iconphoto(True, tk_icon)
         except Exception as e:
             print(f"Icon load failed: {e}")
+
         self.selected_paths = []
         self.output_folder = ""
         self.heic_files = []
@@ -95,16 +94,14 @@ class HEICConverterApp:
         frame = ctk.CTkFrame(self.root, corner_radius=10)
         frame.pack(padx=20, pady=20, fill="both", expand=True)
 
-        label = ctk.CTkLabel(frame, text="Select HEIC images (multiple selection supported)", font=("Arial", 16))
-        label.pack(pady=10)
+        ctk.CTkLabel(frame, text="Select HEIC images (multiple selection supported)", font=("Arial", 16)).pack(pady=10)
 
         btn_frame = ctk.CTkFrame(frame)
         btn_frame.pack(pady=10)
         ctk.CTkButton(btn_frame, text="Select Images", command=self.select_files).pack(side="left", padx=10)
         ctk.CTkButton(btn_frame, text="Output Folder", command=self.select_output_folder).pack(side="left", padx=10)
 
-        tip_label = ctk.CTkLabel(frame, text="Tip: To select all images in a folder, open the folder and press Ctrl+A.", text_color="gray")
-        tip_label.pack()
+        ctk.CTkLabel(frame, text="Tip: To select all images in a folder, open the folder and press Ctrl+A.", text_color="gray").pack()
 
         format_frame = ctk.CTkFrame(frame)
         format_frame.pack(pady=10)
@@ -136,7 +133,7 @@ class HEICConverterApp:
         ctk.CTkButton(button_row, text="About", command=self.show_about, width=120).pack(side="left", padx=10)
 
     def select_files(self):
-        filetypes = [("HEIC images", "*.heic *.HEIC *.HeIc *.hEiC *.HEic *.heiC"), ("All files", "*.*")]
+        filetypes = [("HEIC images", "*.heic"), ("All files", "*.*")]
         initialdir = self.settings.get('last_input_folder', MEDIA_DIR)
         paths = filedialog.askopenfilenames(title="Select HEIC images", filetypes=filetypes, initialdir=initialdir)
         if not paths:
@@ -144,17 +141,13 @@ class HEICConverterApp:
         self.selected_paths = list(paths)
         self.heic_files = collect_heic_files(self.selected_paths)
         count = len(self.heic_files)
-        if not self.heic_files:
-            self.status_label.configure(text="No HEIC images found in selection.")
-        else:
-            self.status_label.configure(text=f"Found {count} HEIC image(s)")
+        self.status_label.configure(text=(f"Found {count} HEIC image(s)" if count else "No HEIC images found."))
         if self.selected_paths:
             self.settings['last_input_folder'] = os.path.dirname(self.selected_paths[0])
             save_settings(self.settings)
 
     def select_output_folder(self):
-        initialdir = self.settings.get('last_output_folder', MEDIA_DIR)
-        folder = filedialog.askdirectory(title="Select output folder", initialdir=initialdir)
+        folder = filedialog.askdirectory(title="Select output folder", initialdir=self.settings.get('last_output_folder', MEDIA_DIR))
         if folder:
             self.output_folder = folder
             self.status_label.configure(text=f"Output folder: {folder}")
@@ -164,12 +157,9 @@ class HEICConverterApp:
     def open_output_folder(self):
         if self.output_folder and os.path.exists(self.output_folder):
             try:
-                if platform.system() == "Windows":
-                    os.startfile(self.output_folder)
-                elif platform.system() == "Darwin":
-                    os.system(f'open "{self.output_folder}"')
-                else:
-                    os.system(f'xdg-open "{self.output_folder}"')
+                if platform.system() == "Windows": os.startfile(self.output_folder)
+                elif platform.system() == "Darwin": os.system(f'open "{self.output_folder}"')
+                else: os.system(f'xdg-open "{self.output_folder}"')
             except Exception as e:
                 messagebox.showerror("Error", f"Could not open folder:\n{e}")
 
@@ -188,6 +178,20 @@ class HEICConverterApp:
         self.heic_files = []
         self.selected_paths = []
 
+    def update_thumbnail(self, image_path):
+        try:
+            image = Image.open(image_path)
+            image.thumbnail((120, 120))
+            self.thumbnail_imgtk = ImageTk.PhotoImage(image)
+            self.thumbnail_label.configure(image=self.thumbnail_imgtk, text="")
+        except Exception as e:
+            print(f"Thumbnail error: {e}")
+            self.thumbnail_label.configure(image=None, text="No preview")
+
+    def clear_thumbnail(self):
+        self.thumbnail_label.configure(image=None, text="")
+        self.thumbnail_imgtk = None
+
     def start_conversion(self):
         if not self.heic_files:
             messagebox.showwarning("Warning", "Please select HEIC files first.")
@@ -200,20 +204,6 @@ class HEICConverterApp:
         self.status_label.configure(text=f"Starting conversion for {len(self.heic_files)} image(s)...")
         self.cancel_requested = False
         self.root.after(100, self.convert_images_threaded)
-
-    def update_thumbnail(self, image_path):
-    try:
-        image = Image.open(image_path)
-        image.thumbnail((120, 120))
-        self.thumbnail_imgtk = ImageTk.PhotoImage(image)
-        self.thumbnail_label.configure(image=self.thumbnail_imgtk, text="")
-    except Exception as e:
-        print(f"Thumbnail error: {e}")
-        self.thumbnail_label.configure(image=None, text="No preview")
-
-    def clear_thumbnail(self):
-        self.thumbnail_label.configure(image=None, text="")
-        self.thumbnail_imgtk = None
 
     def convert_images_threaded(self):
         results = []
@@ -259,13 +249,9 @@ class HEICConverterApp:
         text = """HEIC2PNG - Image Converter
 
 🔹 Convert .HEIC images to PNG or JPEG formats.
-
 🔹 Supports batch processing (multiple files at once).
-
 🔹 Shows progress bar, current image name, and thumbnail.
-
 🔹 Works cross-platform (Windows, Linux, macOS).
-
 🔹 Output images are saved with high quality.
 
 💡 Developed by:"""
@@ -285,11 +271,9 @@ class HEICConverterApp:
         try:
             if platform.system() == "Windows":
                 from win10toast import ToastNotifier
-                toaster = ToastNotifier()
-                toaster.show_toast("HEIC2PNG", "Conversion complete!", duration=5)
+                ToastNotifier().show_toast("HEIC2PNG", "Conversion complete!", duration=5)
             elif platform.system() == "Linux":
                 os.system('notify-send "HEIC2PNG" "Conversion complete!"')
-                os.system('paplay /usr/share/sounds/freedesktop/stereo/complete.oga')
         except Exception as e:
             print(f"Notification error: {e}")
         messagebox.showinfo("Conversion Results", "\n".join(results))
@@ -302,4 +286,3 @@ if __name__ == "__main__":
     app = ctk.CTk()
     HEICConverterApp(app)
     app.mainloop()
-
