@@ -29,24 +29,13 @@ jobs:
         run: |
           nuitka --onefile --windows-icon-from-ico=icon.ico HEIC2PNG.py
 
-      - name: 🧭 List all EXE files (debug)
-        shell: pwsh
+      - name: 🧭 Debug: Show all EXE files + paths
         run: |
-          Write-Host "🔍 Searching for all .exe files:"
-          Get-ChildItem -Recurse -Filter *.exe
+          echo "🔍 Searching all .exe files:"
+          Get-ChildItem -Recurse -Include *.exe | ForEach-Object { Write-Host $_.FullName }
 
-      - name: 🔍 Find built EXE path
-        id: find_exe
-        shell: bash
-        run: |
-          EXE_PATH=$(find . -type f -iname "heic2png.exe" | head -n 1)
-          echo "Found EXE: $EXE_PATH"
-          echo "exe_path=$EXE_PATH" >> $GITHUB_OUTPUT
-
-      - name: 🚀 Upload EXE to GitHub Release
-        uses: softprops/action-gh-release@v1
+      - name: ⛅ Upload ALL .exe files found (debug)
+        uses: actions/upload-artifact@v4
         with:
-          files: ${{ steps.find_exe.outputs.exe_path }}
-          tag_name: ${{ github.ref_name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: all-exe-files
+          path: '**/*.exe'
