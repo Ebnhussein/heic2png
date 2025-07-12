@@ -31,8 +31,8 @@ jobs:
 
       - name: 🧭 Show all .exe files (Debug)
         run: |
-          echo "🔍 Listing all .exe files:"
-          dir /s /b *.exe || true
+          Write-Host "🔍 Listing all .exe files:"
+          Get-ChildItem -Recurse -Filter *.exe
 
       - name: 🔍 Find built EXE path
         id: find_exe
