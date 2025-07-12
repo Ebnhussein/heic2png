@@ -26,7 +26,7 @@ jobs:
 
       - name: Build EXE using Nuitka
         run: |
-          python -m nuitka HEIC2PNG.py --onefile --enable-plugin=tk-inter --windows-icon-from-ico=icon.ico --output-dir=dist
+          python -m nuitka HEIC2PNG.py --onefile --enable-plugin=tk-inter --windows-icon-from-ico=icon.ico --output-dir=dist --disable-downloads=no
         shell: bash
 
       - name: Upload EXE to GitHub Release
