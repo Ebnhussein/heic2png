@@ -22,17 +22,26 @@ jobs:
       - name: 📦 Install Python dependencies
         run: pip install -r requirements.txt
 
-      - name: 🔧 Install Nuitka
-        run: pip install -U nuitka
-
-      - name: 🏗️ Build EXE with Nuitka
+      - name: 🔧 Install Builder
+        run: |
+          pip install -U nuitka
+ 
+      - name: 🏗️ Build EXE
         run: |
           nuitka --onefile --windows-icon-from-ico=icon.ico HEIC2PNG.py
 
-      - name: 🚀 Create GitHub Release
+      - name: 🔍 Find built EXE path
+        id: find_exe
+        shell: bash
+        run: |
+          EXE_PATH=$(find . -name "*.exe" | head -n 1)
+          echo "Found EXE at: $EXE_PATH"
+          echo "exe_path=$EXE_PATH" >> $GITHUB_OUTPUT
+
+      - name: 🚀 Upload EXE to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: HEIC2PNG.exe
+          files: ${{ steps.find_exe.outputs.exe_path }}
           tag_name: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
