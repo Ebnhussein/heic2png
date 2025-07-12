@@ -40,8 +40,8 @@ jobs:
         shell: bash
         run: |
           EXE_PATH=$(find . -name "*.exe" | head -n 1)
-          echo "Found EXE: $EXE_PATH"
-          echo "exe_path=$EXE_PATH" >> "$GITHUB_OUTPUT"
+            echo "Found EXE: $EXE_PATH"
+            echo "exe_path=$EXE_PATH" >> "$GITHUB_OUTPUT"
 
       - name: 🚀 Upload to GitHub Release
         uses: softprops/action-gh-release@v1
