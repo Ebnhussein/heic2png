@@ -1,5 +1,8 @@
 name: Build HEIC2PNG with Nuitka
 
+permissions:
+  contents: write
+
 on:
   push:
     tags:
@@ -10,26 +13,24 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
+      - run: |
           pip install -r requirements.txt
           pip install nuitka
 
-      - name: Build EXE using Nuitka
-        run: |
+      - run: |
           nuitka HEIC2PNG.py --onefile --enable-plugin=tk-inter --windows-icon-from-ico=icon.ico --output-dir=dist
+        shell: bash
 
       - name: Upload EXE to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: dist/HEIC2PNG.exe
+          fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
