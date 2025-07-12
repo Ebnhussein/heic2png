@@ -29,11 +29,11 @@ jobs:
         run: |
           nuitka --onefile --windows-icon-from-ico=icon.ico HEIC2PNG.py
 
-      - name: 🧭 Debug Show all exe files
+      - name: 🧭 Debug: Show all exe files
         shell: pwsh
         run: |
-          echo "🔍 Listing all .exe files:"
-          Get-ChildItem -Path . -Recurse -Include *.exe | ForEach-Object { Write-Host $_.FullName }
+          Write-Output "🔍 Listing all .exe files:"
+          Get-ChildItem -Path . -Recurse -Include *.exe | ForEach-Object { Write-Output $_.FullName }
 
       - name: 🔍 Find the generated EXE path
         id: find_exe
@@ -41,7 +41,7 @@ jobs:
         run: |
           EXE_PATH=$(find . -name "*.exe" | head -n 1)
           echo "Found EXE: $EXE_PATH"
-          echo "exe_path=$EXE_PATH" >> "$GITHUB_OUTPUT"
+          echo "exe_path=$EXE_PATH" >> $GITHUB_OUTPUT
 
       - name: 🚀 Upload to GitHub Release
         uses: softprops/action-gh-release@v1
