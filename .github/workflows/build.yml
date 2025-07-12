@@ -19,12 +19,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - run: |
+      - name: Install dependencies
+        run: |
           pip install -r requirements.txt
-          pip install nuitka
+          pip install -U nuitka
 
-      - run: |
-          nuitka HEIC2PNG.py --onefile --enable-plugin=tk-inter --windows-icon-from-ico=icon.ico --output-dir=dist
+      - name: Build EXE using Nuitka
+        run: |
+          python -m nuitka HEIC2PNG.py --onefile --enable-plugin=tk-inter --windows-icon-from-ico=icon.ico --output-dir=dist
         shell: bash
 
       - name: Upload EXE to GitHub Release
