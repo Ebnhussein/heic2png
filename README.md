@@ -12,6 +12,8 @@ A modern GUI tool to convert `.HEIC` images to `.PNG` or `.JPEG` with preview, b
 2. Download `HEIC2PNG.exe`
 3. Run directly – no installation needed!
 
+> ⚠️ You may see a Windows warning since the app is unsigned. Just click “Run Anyway”.
+
 ---
 
 ## ✨ Features
@@ -41,13 +43,15 @@ python3 HEIC2PNG.py
 
 ---
 
-## 🧪 Build Executable
+## 🧪 Build Executable (Nuitka)
 
 ### 🔨 Windows / Linux / macOS
 
 ```bash
 pip install -r requirements.txt
-pyinstaller --onefile --windowed --icon=icon.ico HEIC2PNG.py
+pip install -U nuitka
+nuitka --onefile --windows-icon-from-ico=icon.ico HEIC2PNG.py
+
 ```
 
 ✅ Output file will be in the `dist/` folder
@@ -71,8 +75,8 @@ pyinstaller --onefile --windowed --icon=icon.ico HEIC2PNG.py
 HEIC2PNG/
 ├── HEIC2PNG.py             # Main app script
 ├── requirements.txt        # Dependencies
-├── icon.ico /              # App icon
-└── dist/                   # Generated executables
+├── icon.ico                # App icon
+└── README.md               # Documentation
 ```
 
 ---
@@ -83,15 +87,17 @@ HEIC2PNG/
 - [pyheif](https://pypi.org/project/pyheif/)
 - [customtkinter](https://github.com/TomSchimansky/CustomTkinter)
 - [tkinterdnd2](https://pypi.org/project/tkinterdnd2/)
-- [pyinstaller](https://pypi.org/project/pyinstaller/)
+- [nuitka](https://pypi.org/project/nuitka/)
 
 ---
 
 ## 🧰 Troubleshooting
 
-- ❌ **No HEIC images found?** → Check `.heic` extension is correct
-- ❌ **Icon not loading?** → Confirm `icon.ico` is in the same folder
-- ❌ **PyInstaller fails?** → Run `pip install pyinstaller`
+- ❌ No HEIC images found? → Make sure the file extensions are .heic
+- ❌ Icon not loading? → Confirm icon.ico is in the same directory
+- ❌ Build fails with Nuitka? → Ensure Python is 3.10+ and all dependencies are installed
+
+
 
 ---
 
