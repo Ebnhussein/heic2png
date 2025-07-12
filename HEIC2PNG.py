@@ -1,5 +1,7 @@
 import os
-import pyheif
+#import pyheif
+from pillow_heif import register_heif_opener
+register_heif_opener()
 from PIL import Image, ImageTk
 import customtkinter as ctk
 from tkinter import filedialog, messagebox
