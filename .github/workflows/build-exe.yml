@@ -1,0 +1,52 @@
+name: Build & Release HEIC2PNG EXE
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: ✅ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 📦 Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: 🔧 Install Nuitka
+        run: pip install -U nuitka
+
+      - name: 🏗️ Build EXE with Nuitka
+        run: |
+          nuitka --onefile --windows-icon-from-ico=icon.ico HEIC2PNG.py
+
+      - name: 🧭 List all EXE files (debug)
+        shell: pwsh
+        run: |
+          Write-Host "🔍 Searching for all .exe files:"
+          Get-ChildItem -Recurse -Filter *.exe
+
+      - name: 🔍 Find built EXE path
+        id: find_exe
+        shell: bash
+        run: |
+          EXE_PATH=$(find . -type f -iname "heic2png.exe" | head -n 1)
+          echo "Found EXE: $EXE_PATH"
+          echo "exe_path=$EXE_PATH" >> $GITHUB_OUTPUT
+
+      - name: 🚀 Upload EXE to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ steps.find_exe.outputs.exe_path }}
+          tag_name: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
