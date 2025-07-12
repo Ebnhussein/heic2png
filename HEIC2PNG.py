@@ -202,20 +202,14 @@ class HEICConverterApp:
         self.root.after(100, self.convert_images_threaded)
 
     def update_thumbnail(self, image_path):
-        try:
-            heif_file = pyheif.read(image_path)
-            image = Image.frombytes(
-                heif_file.mode,
-                heif_file.size,
-                heif_file.data,
-                "raw",
-                heif_file.mode
-            )
-            image.thumbnail((120, 120))
-            self.thumbnail_imgtk = ImageTk.PhotoImage(image)
-            self.thumbnail_label.configure(image=self.thumbnail_imgtk, text="")
-        except Exception:
-            self.thumbnail_label.configure(image=None, text="No preview")
+    try:
+        image = Image.open(image_path)
+        image.thumbnail((120, 120))
+        self.thumbnail_imgtk = ImageTk.PhotoImage(image)
+        self.thumbnail_label.configure(image=self.thumbnail_imgtk, text="")
+    except Exception as e:
+        print(f"Thumbnail error: {e}")
+        self.thumbnail_label.configure(image=None, text="No preview")
 
     def clear_thumbnail(self):
         self.thumbnail_label.configure(image=None, text="")
