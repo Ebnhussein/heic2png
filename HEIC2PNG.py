@@ -1,11 +1,10 @@
 import os
-#import pyheif
 from pillow_heif import register_heif_opener
 register_heif_opener()
+
 from PIL import Image, ImageTk
 import customtkinter as ctk
 from tkinter import filedialog, messagebox
-from concurrent.futures import ThreadPoolExecutor
 import platform
 import json
 
@@ -38,14 +37,7 @@ def convert_single_image(heic_path, output_folder, out_format, jpeg_quality=90):
     out_name = base_name + (".jpg" if ext == "jpeg" else ".png")
     out_path = os.path.join(output_folder, out_name)
     try:
-        heif_file = pyheif.read(heic_path)
-        image = Image.frombytes(
-            heif_file.mode,
-            heif_file.size,
-            heif_file.data,
-            "raw",
-            heif_file.mode
-        )
+        image = Image.open(heic_path)
         if ext == "jpeg":
             image = image.convert("RGB")
             image.save(out_path, "JPEG", quality=jpeg_quality)
