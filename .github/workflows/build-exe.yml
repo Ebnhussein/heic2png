@@ -3,8 +3,8 @@ name: Build & Release HEIC2PNG EXE
 on:
   push:
     tags:
-      - 'v*'
-  workflow_dispatch:
+      - 'v*'        
+  workflow_dispatch:  
 
 jobs:
   build:
@@ -22,16 +22,16 @@ jobs:
       - name: 📦 Install Python dependencies
         run: pip install -r requirements.txt
 
-      - name: 🔧 Install Builder
+      - name: 🔧 Install Nuitka
         run: pip install -U nuitka
 
-      - name: 🏗️ Build EXE
+      - name: 🏗️ Build EXE with Nuitka
         run: |
           nuitka --onefile --windows-icon-from-ico=icon.ico HEIC2PNG.py
 
-      - name: 🧭 Show all .exe files
+      - name: 🧭 Show all .exe files (Debug)
         run: |
-          echo "🔍 Listing all .exe files in workspace:"
+          echo "🔍 Listing all .exe files:"
           dir /s /b *.exe || true
 
       - name: 🔍 Find built EXE path
