@@ -28,6 +28,7 @@ jobs:
         run: |
           python -m nuitka HEIC2PNG.py --onefile --enable-plugin=tk-inter \
             --windows-icon-from-ico=icon.ico --output-dir=dist \
+            --windows-disable-console \
             --assume-yes-for-downloads
         shell: bash
 
