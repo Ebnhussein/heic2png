@@ -4,3 +4,4 @@ customtkinter>=5.2.0
 tkinterdnd2
 nuitka>=1.8.0
 win10toast ; platform_system == "Windows"
+libheif-dev
