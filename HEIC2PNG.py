@@ -7,6 +7,7 @@ import customtkinter as ctk
 from tkinter import filedialog, messagebox
 import platform
 import json
+import threading
 
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue")
@@ -46,20 +47,6 @@ def convert_single_image(heic_path, output_folder, out_format, jpeg_quality=90):
         return f"✅ {filename} → {out_name}"
     except Exception as e:
         return f"❌ {filename} failed: {str(e)}"
-
-def collect_heic_files(paths):
-    heic_files = []
-    for path in paths:
-        if os.path.isdir(path):
-            for root, _, files in os.walk(path):
-                heic_files.extend([
-                    os.path.join(root, f)
-                    for f in files
-                    if f.lower().endswith('.heic')
-                ])
-        elif os.path.isfile(path) and path.lower().endswith('.heic'):
-            heic_files.append(path)
-    return heic_files
 
 class HEICConverterApp:
     def __init__(self, root):
@@ -133,15 +120,22 @@ class HEICConverterApp:
         ctk.CTkButton(button_row, text="About", command=self.show_about, width=120).pack(side="left", padx=10)
 
     def select_files(self):
-        filetypes = [("HEIC images", "*.heic"), ("All files", "*.*")]
+        filetypes = [
+            ("HEIC images", "*.heic *.HEIC *.HeIc *.hEiC *.HEic *.heiC"),
+            ("All files", "*.*")
+        ]
         initialdir = self.settings.get('last_input_folder', MEDIA_DIR)
         paths = filedialog.askopenfilenames(title="Select HEIC images", filetypes=filetypes, initialdir=initialdir)
+
         if not paths:
             return
+
         self.selected_paths = list(paths)
-        self.heic_files = collect_heic_files(self.selected_paths)
+        self.heic_files = [p for p in self.selected_paths if p.lower().endswith(".heic")]
+
         count = len(self.heic_files)
-        self.status_label.configure(text=(f"Found {count} HEIC image(s)" if count else "No HEIC images found."))
+        self.status_label.configure(text=(f"Found {count} HEIC image(s)" if count else "No HEIC images found in selection."))
+
         if self.selected_paths:
             self.settings['last_input_folder'] = os.path.dirname(self.selected_paths[0])
             save_settings(self.settings)
@@ -236,7 +230,6 @@ class HEICConverterApp:
             self.root.after(0, self.clear_thumbnail)
             self.root.after(0, self.progress_label.configure, {"text": "0/0"})
 
-        import threading
         threading.Thread(target=worker, daemon=True).start()
 
     def show_about(self):
